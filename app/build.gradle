@@ -5,10 +5,19 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    signingConfigs {
+        release_signing_config {
+            keyAlias 'key0'
+            keyPassword 'password'
+            storeFile file('/Users/ivanwooll/Development/BuildTypesTest/keystore_release')
+            storePassword 'password'
+            v1SigningEnabled true
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.tappable.buildtypestest"
-        minSdkVersion 24
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -18,13 +27,19 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release_signing_config
+        }
+
+        dev {
+            initWith(release)
+            buildConfigField 'String', 'MY_STRING', '"DEV_STRING"'
         }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
