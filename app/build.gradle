@@ -31,7 +31,7 @@ android {
         }
 
         dev {
-            initWith(release)
+            initWith(debug)
             buildConfigField 'String', 'MY_STRING', '"DEV_STRING"'
         }
     }
